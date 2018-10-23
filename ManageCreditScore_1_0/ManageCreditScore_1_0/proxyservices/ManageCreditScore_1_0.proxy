@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="abstract SOAP" isSoap12="false" xsi:type="con4:AnySoapBindingType" xmlns:con4="http://www.bea.com/wli/sb/services/bindings/config"/>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+    <ser:ws-policy>
+      <ser:binding-mode>service-policy-bindings</ser:binding-mode>
+      <ser:policies/>
+    </ser:ws-policy>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>http</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>/services/managecreditscore_1_0</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <http:inbound-properties/>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router errorHandler="_onErrorHandler-2735924137246977291-6c0b529d.163cf24ca11.-75be">
+    <con:pipeline type="error" name="_onErrorHandler-2735924137246977291-6c0b529d.163cf24ca11.-75be">
+      <con:stage name="Generic_Exception_Handler">
+        <con:comment>Handles all the backend faults and the OSB fault.</con:comment>
+        <con:context xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con2="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+          <con1:userNsDecl namespace="http://soa.o2.ie/coredata_1_0" prefix="xcore"/>
+          <con1:userNsDecl namespace="http://exception.topup.service.middleware.o2.com" prefix="mw"/>
+          <con1:userNsDecl namespace="http://www.bea.com/wli/sb/stages/transform/config" prefix="con"/>
+          <con1:userNsDecl namespace="http://exception.topup.service.middleware.o2.com" prefix="mid"/>
+          <con1:userNsDecl namespace="http://soa.o2.ie/coredata_1" prefix="cor"/>
+          <con1:userNsDecl namespace="http://soa.o2.ie/adapter/services/manageaccountdata_1_0" prefix="mad"/>
+          <con1:userNsDecl namespace="http://soa.o2.ie/adapter/services/amdocsdata_1_0" prefix="amd"/>
+          <con1:userNsDecl namespace="http://soa.o2.ie/adapter/services/managecreditscoredata_1_0" prefix="mcd"/>
+          <con1:varNsDecl namespace="http://soa.o2.ie/managetopupdata_1_0" prefix="man"/>
+        </con:context>
+        <con:actions xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con2="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+          <con1:reply isError="true">
+            <con1:id>_ActionId-2735924137246977291-6c0b529d.163cf24ca11.-753a</con1:id>
+          </con1:reply>
+        </con:actions>
+      </con:stage>
+    </con:pipeline>
+    <con:pipeline type="request" name="PipelinePairNode1_request"/>
+    <con:pipeline type="response" name="PipelinePairNode1_response">
+      <con:stage name="responseTransformation">
+        <con:context/>
+        <con:actions>
+          <con1:replace contents-only="false" varName="body">
+            <con2:id>_ActionId-4032674088356746054-4433e2aa.1669a545ef8.-7c28</con2:id>
+            <con1:location>
+              <con2:xpathText>.</con2:xpathText>
+            </con1:location>
+            <con1:expr>
+              <con2:xqueryText><![CDATA[<soapenv:Body xmlns:man="http://soa.o2.ie/adapter/services/managecreditscoredata_1_0" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+      <man1:updateCreditScoreResponse xmlns:man1="http://soa.three.ie/managecreditscoredata_1_0">
+         <man1:accountNumber>289108781</man1:accountNumber>
+      </man1:updateCreditScoreResponse>
+   </soapenv:Body>]]></con2:xqueryText>
+            </con1:expr>
+          </con1:replace>
+        </con:actions>
+      </con:stage>
+    </con:pipeline>
+    <con:flow>
+      <con:pipeline-node name="PipelinePairNode1">
+        <con:request>PipelinePairNode1_request</con:request>
+        <con:response>PipelinePairNode1_response</con:response>
+      </con:pipeline-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>
